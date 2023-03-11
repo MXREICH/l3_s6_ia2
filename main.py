@@ -57,6 +57,25 @@ def partie_joueur():
 def partie_ia():
     colors = 'LOL'
 
+"""
+La fonction create_code vérifie que le joueur a bien entré un code
+égal à quatre couleurs et que les couleurs sont bien celles demandées
+"""
+def create_code():
+    valid_color = 'RGBYWP'
+    demande = input("Veuillez entrer un code de 4 couleurs parmi RGBYWP: ")
+
+    # Vérifier que le code est de bonne longueur
+    if len(demande) != 4:
+        err("CODE DONNÉ EST DE MAUVAISE LONGUEUR")
+
+
+    # Vérifier que chaque couleur est valide
+    for couleur in demande:
+        if couleur not in valid_color:
+            err("COULEUR DONNÉE NON VALIDE")
+
+    return demande
 
 def game_rules(choix):
     if choix == 1:

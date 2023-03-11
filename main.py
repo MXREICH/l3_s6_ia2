@@ -1,4 +1,8 @@
+from itertools import product
+
 from colorama import Fore, Back
+
+import minimax
 from err import err
 import random
 import time
@@ -9,16 +13,16 @@ def format_code(essai, code):
     check = ""
     for i in range(len(essai)):  # Vérification des coups
         if code[i] == essai[i]:
-            res += " " +Back.LIGHTGREEN_EX + Fore.BLACK + "[✓]" + Back.RESET + Fore.RESET
+            res += " " + Back.LIGHTGREEN_EX + Fore.BLACK + "[✓]" + Back.RESET + Fore.RESET
             check += essai[i]
 
     for i in range(len(essai)):
         if essai[i] in code and code[i] != essai[i] and essai[i] not in check:
-            res += " "+Back.LIGHTYELLOW_EX + Fore.BLACK + "[⁓]" + Back.RESET + Fore.RESET
+            res += " " + Back.LIGHTYELLOW_EX + Fore.BLACK + "[⁓]" + Back.RESET + Fore.RESET
 
     for i in range(len(essai)):
         if essai[i] not in code:
-            res += " "+Back.LIGHTRED_EX + Fore.BLACK + "[✕]" + Back.RESET + Fore.RESET
+            res += " " + Back.LIGHTRED_EX + Fore.BLACK + "[✕]" + Back.RESET + Fore.RESET
     res += "\n"
     return res
 
@@ -55,20 +59,24 @@ def partie_joueur():
 
 
 def partie_ia():
-    colors = 'LOL'
+    colors = 'RGBYWP'
+    code = create_code()
+    toute_possibilite = [''.join(i) for i in product(colors, repeat=4)]
+    minimax.mini_max(code,toute_possibilite)
 
 """
 La fonction create_code vérifie que le joueur a bien entré un code
 égal à quatre couleurs et que les couleurs sont bien celles demandées
 """
+
+
 def create_code():
     valid_color = 'RGBYWP'
-    demande = input("Veuillez entrer un code de 4 couleurs parmi RGBYWP: ")
+    demande = input(">")
 
     # Vérifier que le code est de bonne longueur
     if len(demande) != 4:
         err("CODE DONNÉ EST DE MAUVAISE LONGUEUR")
-
 
     # Vérifier que chaque couleur est valide
     for couleur in demande:
@@ -76,6 +84,7 @@ def create_code():
             err("COULEUR DONNÉE NON VALIDE")
 
     return demande
+
 
 def game_rules(choix):
     if choix == 1:
@@ -92,12 +101,12 @@ def game_rules(choix):
         print("\t\t\t\t\tÀ chaque envoi d'une de vos réponse, il vous sera montré quatre jetons.")
 
     print("\t\t\tLe jeton " + Back.LIGHTGREEN_EX + Fore.BLACK + "[✓]" + Back.RESET + Fore.RESET + " signifie"
-          " qu'un des choix est de la bonne couleur au bon endroit")
+                                                                                                  " qu'un des choix est de la bonne couleur au bon endroit")
     print("\t\t  Le jeton " + Back.LIGHTYELLOW_EX + Fore.BLACK + "[⁓]" + Back.RESET + Fore.RESET + " signifie"
-          " qu'un des choix est de la bonne couleur au mauvais endroit")
+                                                                                                   " qu'un des choix est de la bonne couleur au mauvais endroit")
     print("\t\t\t\tLe jeton " + Back.LIGHTRED_EX + Fore.BLACK + "[✕]" + Back.RESET + Fore.RESET + " signifie"
-          " qu'un des choix n'est pas une couleur du code")
-    time.sleep(10)
+                                                                                                  " qu'un des choix n'est pas une couleur du code")
+    time.sleep(1)
 
 
 def main():
@@ -105,7 +114,7 @@ def main():
     print("\t\t\t\t\t\t\t\t+====================================================+")
     print("\t\t\t\t\t\t\t\t|                     MASTERMIND                     |")
     print("\t\t\t\t\t\t\t\t+====================================================+")
-    print("\t\t\t\t\t\t Les règles sont simples, devinez un code en faisant le moins d'essai")
+    print("\t\t\t\t\t\t Les règles sont simples, devinez un code en faisant moins de 10 essais")
     choix = input(
         "\t\t\t\t\t\t\t\t  Choisissez " + Back.LIGHTRED_EX + Fore.BLACK + "1" + Back.RESET + Fore.RESET + " pour "
                                                                                                           "choisir un "

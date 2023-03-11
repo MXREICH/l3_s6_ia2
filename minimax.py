@@ -1,52 +1,48 @@
-class Pruning:
-    def __init__(self, mastermind_tree):
-        self.game_tree = mastermind_tree  # GameTree
-        self.root = mastermind_tree.root  # GameNode
-        return
+from collections import Counter
+from colorama import Fore, Back
 
-    def alpha_beta_search(self, node):
-        infinity = float('inf')
-        best_val = -infinity
-        beta = infinity
+from main import format_code
 
-        successors = node.getSucc()
-        best_state = None
-        for state in successors:
-            value = self.min_value(state, best_val, beta)
-            if value > best_val:
-                best_val = value
-                best_state = state
-        print("AlphaBeta:  Utility Value of Root Node: = " + str(best_val))
-        print("AlphaBeta:  Best State is: " + best_state.Name)
-        return best_state
 
-    def max_value(self, node, alpha, beta):
-        print("AlphaBeta–>MAX: Visited Node :: " + node.Name)
-        if node.isLeaf():
-            return node.nodeValue()
-        infinity = float('inf')
-        value = -infinity
+def maximisation(choix, etat):
+    evaluation_list = []
+    for i in range(len(etat)):
+        evaluation_list.append(valeur(choix, etat[i]))
+    compteur_evaluation = Counter(evaluation_list).values()
+    valeur_maximisation = max(compteur_evaluation)
+    return valeur_maximisation
 
-        successors = node.getSucc()
-        for state in successors:
-            value = max(value, self.min_value(state, alpha, beta))
-            if value >= beta:
-                return value
-            alpha = max(alpha, value)
-        return value
 
-    def min_value(self, node, alpha, beta):
-        print("AlphaBeta–>MIN: Visited Node :: " + node.Name)
-        if node.isLeaf():
-            return node.nodeValue()
-        infinity = float('inf')
-        value = infinity
+def valeur(choix, code):
+    evaluation = sum((Counter(code) & Counter(choix)).values())
+    val_juste = sum(i == j for i, j in zip(choix, code))
+    reste = evaluation - val_juste
+    return val_juste, reste
 
-        successors = node.getSucc()
-        for state in successors:
-            value = min(value, self.max_value(state, alpha, beta))
-            if value <= alpha:
-                return value
-            beta = min(beta, value)
 
-        return value
+def mini_max(code, possibilite):
+    meilleur_choix = "RGBW"  # Choix d'une couleur arbitraire pour pouvoir correctement commencer l'élagage
+    beta = len(possibilite)
+    etat = possibilite
+    tentative = 1
+    while True:
+        valeur_du_choix = valeur(meilleur_choix, code)
+        print("\n")
+        print("TENTATIVE N°{}: CHOIX DE L'IA : {}".format(tentative, format_code(meilleur_choix,code)))
+        if meilleur_choix == code:
+            print("PERDU ! L'IA A TROUVÉ LE CODE {} EN {} TENTATIVES".format(code, tentative))
+            break
+        etat = [i for i in etat if valeur(meilleur_choix, i) == valeur_du_choix]
+
+        if len(etat) == 1:
+            meilleur_choix = etat[0]
+        else:
+            for i in range(len(etat)):
+                alpha = maximisation(etat[i], etat)
+                if alpha < beta:
+                    beta = alpha
+                    meilleur_choix = etat[i]
+                if etat[i] == code:
+                    break
+
+        tentative += 1

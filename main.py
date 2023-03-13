@@ -1,7 +1,5 @@
 from itertools import product
-
 from colorama import Fore, Back
-
 import minimax
 from err import err
 import random
@@ -101,15 +99,16 @@ def game_rules(choix):
         print("\t\t\t\t\tÀ chaque envoi d'une de vos réponse, il vous sera montré quatre jetons.")
 
     print("\t\t\tLe jeton " + Back.LIGHTGREEN_EX + Fore.BLACK + "[✓]" + Back.RESET + Fore.RESET + " signifie"
-                                                                                                  " qu'un des choix est de la bonne couleur au bon endroit")
+          " qu'un des choix est de la bonne couleur au bon endroit")
     print("\t\t  Le jeton " + Back.LIGHTYELLOW_EX + Fore.BLACK + "[⁓]" + Back.RESET + Fore.RESET + " signifie"
-                                                                                                   " qu'un des choix est de la bonne couleur au mauvais endroit")
+          " qu'un des choix est de la bonne couleur au mauvais endroit")
     print("\t\t\t\tLe jeton " + Back.LIGHTRED_EX + Fore.BLACK + "[✕]" + Back.RESET + Fore.RESET + " signifie"
-                                                                                                  " qu'un des choix n'est pas une couleur du code")
+          " qu'un des choix n'est pas une couleur du code")
     time.sleep(1)
 
 
 def main():
+    global joueur_breaker
     print("\n" * 100)
     print("\t\t\t\t\t\t\t\t+====================================================+")
     print("\t\t\t\t\t\t\t\t|                     MASTERMIND                     |")

@@ -1,6 +1,5 @@
 from collections import Counter
-from colorama import Fore, Back
-
+import random
 from main import format_code
 
 
@@ -21,7 +20,10 @@ def valeur(choix, code):
 
 
 def mini_max(code, possibilite):
-    meilleur_choix = "RGBW"  # Choix d'une couleur arbitraire pour pouvoir correctement commencer l'élagage
+    colors = "RGBYWP"
+    meilleur_choix = ""
+    for i in range(0, 4):
+        meilleur_choix += random.choice(colors)  # Choix d'une couleur arbitraire pour pouvoir correctement commencer l'élagage
     beta = len(possibilite)
     etat = possibilite
     tentative = 1
